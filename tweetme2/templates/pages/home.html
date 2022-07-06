@@ -2,6 +2,54 @@
 
 {% block content %}
 
-Hello World
+
+<div id="hehe">
+</div>
+
+<script>
+
+
+    const axemple_ajax = new XMLHttpRequest()
+    const method = 'GET'
+    const url = '/tweets'
+    const responseType = 'json'
+    
+    function HandleDidLike(id, count) {
+      console.log(id);
+    } 
+
+
+    function LikeButton(item){
+        return "<button class = 'btn btn-primary btn-sm' onclick=HandleDidLike("+item.id+item.likes+")>"+ item.likes +" Like</button>";
+    } 
+
+
+
+    function TweetElement(item){
+        var element = "<div class='mb-4 item' id= 'id-tweet"+ item.id + "'><p>" 
+            + item.content +"</p>"+"<div class='btn-group'>" + LikeButton(item) + "</div></div>"
+        return element
+    }
+
+    axemple_ajax.responseType = responseType
+    axemple_ajax.open(method,url)
+    axemple_ajax.onload = function() {
+        var last_string  = "";
+        const t_list = axemple_ajax.response.response;
+        var i;
+        for (i = 0 ; i < t_list.length;i++){
+            var tweetElement = TweetElement(t_list[i])
+            last_string += tweetElement  
+
+        }
+        console.log("hiii")
+    
+        console.log(last_string)
+        
+        document.getElementById("hehe").innerHTML = last_string;
+        
+    }
+    axemple_ajax.send()
+</script>
 
 {% endblock content %}
