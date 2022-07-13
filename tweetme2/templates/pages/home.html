@@ -37,6 +37,9 @@
         const method = myForm.getAttribute("method")
         console.log(url,method)
         axemple_ajax.open(method,url)
+        axemple_ajax.setRequestHeader("HTTP_X_REQUESTED_WITH","XMLHttpRequest")
+        axemple_ajax.setRequestHeader("X-Requested-With","XMLHttpRequest")
+
         axemple_ajax.onload = function() {
             const severResponse = axemple_ajax.response
             loadingTweet(tweetElement)
