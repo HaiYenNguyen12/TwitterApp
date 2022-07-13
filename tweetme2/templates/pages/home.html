@@ -7,17 +7,75 @@
     </div>
 </div>
 
+<div class = 'row mb-3'>
+<div class = 'col-md-4 mx-auto col-10'>
+    <form class = 'form' method='POST' action='/create' id = "form_create"> {% csrf_token %}
+        <input type='hidden' value='/' name = 'next'/>
+        <textarea class="form-control" name="content" id="tweet_content" rows="3" placeholder="Write your tweet here ..."></textarea>
+        <button name="" id="" class="btn btn-primary" type="submit">Save</button>
+    </form>
+</div>
+</div>
 
 <div class="row" id="hehe">
 </div>
 
+
+
+
 <script>
+    const tweetElement = document.getElementById("hehe")
+    function handleSubmitForm(event){
+        event.preventDefault() //Prevent Auto Follow and try to do - by- hand
+
+        const myForm = event.target
+        const formData = new FormData(myForm)
 
 
-    const axemple_ajax = new XMLHttpRequest()
-    const method = 'GET'
-    const url = '/tweets'
-    const responseType = 'json'
+        const axemple_ajax = new XMLHttpRequest()
+        const url = myForm.getAttribute("action")
+        const method = myForm.getAttribute("method")
+        console.log(url,method)
+        axemple_ajax.open(method,url)
+        axemple_ajax.onload = function() {
+            const severResponse = axemple_ajax.response
+            loadingTweet(tweetElement)
+        }
+        axemple_ajax.send(formData) 
+    }
+
+
+    const formCreate = document.getElementById("form_create")
+    formCreate.addEventListener("submit", handleSubmitForm)
+
+    
+
+    function loadingTweet(tweetE){
+        const axemple_ajax = new XMLHttpRequest()
+        const method = 'GET'
+        const url = '/tweets'
+        const responseType = 'json'
+
+        axemple_ajax.responseType = responseType
+        axemple_ajax.open(method,url)
+        axemple_ajax.onload = function() {
+            var last_string  = "";
+            const t_list = axemple_ajax.response.response;
+            var i;
+            for (i = 0 ; i < t_list.length;i++){
+                var tweetElement = TweetElement(t_list[i])
+                last_string += tweetElement  
+    
+            }
+            tweetE.innerHTML = last_string
+        }
+        axemple_ajax.send()
+
+    }
+    loadingTweet(tweetElement)
+
+
+
     
     function HandleDidLike(id, count) {
       console.log(id);
@@ -36,25 +94,7 @@
         return element
     }
 
-    axemple_ajax.responseType = responseType
-    axemple_ajax.open(method,url)
-    axemple_ajax.onload = function() {
-        var last_string  = "";
-        const t_list = axemple_ajax.response.response;
-        var i;
-        for (i = 0 ; i < t_list.length;i++){
-            var tweetElement = TweetElement(t_list[i])
-            last_string += tweetElement  
 
-        }
-        console.log("hiii")
-    
-        console.log(last_string)
-        
-        document.getElementById("hehe").innerHTML = last_string;
-        
-    }
-    axemple_ajax.send()
 </script>
 
 {% endblock content %}
