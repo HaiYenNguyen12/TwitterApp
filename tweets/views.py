@@ -1,7 +1,6 @@
 from django.http import JsonResponse,HttpResponseRedirect
 from django.shortcuts import render,redirect
 from .models import Tweet
-import random
 from .forms import TweetForm
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.conf import settings
@@ -23,7 +22,7 @@ def tweet_create_view(request, *args, **kwargs):
     if form.is_valid:
         obj = form.save(commit=False)
         obj.save()
-        if request.is_ajax():
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
             return JsonResponse(obj.serialize(),status=201)
         if next_url != None and url_has_allowed_host_and_scheme(next_url,ALLOW_HOST):
             return redirect(next_url)

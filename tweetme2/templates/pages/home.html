@@ -24,7 +24,8 @@
 
 
 <script>
-    const tweetElement = document.getElementById("hehe")
+    const tweetContainer = document.getElementById("hehe")
+
     function handleSubmitForm(event){
         event.preventDefault() //Prevent Auto Follow and try to do - by- hand
 
@@ -33,16 +34,23 @@
 
 
         const axemple_ajax = new XMLHttpRequest()
+        const responseType = 'json'
+
+        axemple_ajax.responseType = responseType
         const url = myForm.getAttribute("action")
         const method = myForm.getAttribute("method")
-        console.log(url,method)
+     
         axemple_ajax.open(method,url)
         axemple_ajax.setRequestHeader("HTTP_X_REQUESTED_WITH","XMLHttpRequest")
         axemple_ajax.setRequestHeader("X-Requested-With","XMLHttpRequest")
 
         axemple_ajax.onload = function() {
-            const severResponse = axemple_ajax.response
-            loadingTweet(tweetElement)
+            if (axemple_ajax.status === 201){
+                const newTweetJson = axemple_ajax.response
+                const newTestItem =  tweetElement(newTweetJson)
+                const orginalHtml = tweetContainer.innerHTML
+                
+            }
         }
         axemple_ajax.send(formData) 
     }
@@ -75,7 +83,7 @@
         axemple_ajax.send()
 
     }
-    loadingTweet(tweetElement)
+    loadingTweet(tweetContainer)
 
 
 

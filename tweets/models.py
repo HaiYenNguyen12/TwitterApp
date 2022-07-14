@@ -11,8 +11,7 @@ class Tweet(models.Model):
 
     def serialize(self):
 
-        return 
-        {
+        return {
             
             "id" : self.id,
             "content" : self.content,
