@@ -97,7 +97,7 @@
         axemple_ajax.open(method,url)
         axemple_ajax.onload = function() {
             var last_string  = "";
-            const t_list = axemple_ajax.response.response;
+            const t_list = axemple_ajax.response;
             var i;
             for (i = 0 ; i < t_list.length;i++){
                 var tweetElement = TweetElement(t_list[i])

@@ -2,6 +2,9 @@ from django.http import JsonResponse,HttpResponseRedirect
 from django.shortcuts import render,redirect
 from .models import Tweet
 from .forms import TweetForm
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from .serializers import TweetSerializer
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.conf import settings
 
@@ -14,9 +17,36 @@ def home_view (request, *args, **kwargs):
     return render(request,"pages/home.html",context={},status=200)
 
 
-
-
+@api_view(['POST'])
 def tweet_create_view(request, *args, **kwargs):
+    serializer = TweetSerializer(request.POST)
+    if serializer.is_valid(raise_exception=True):
+        serializer.save(user = request.user)
+        return Response(serializer.data, status = 201)
+    return Response({}, status = 400)
+
+@api_view(['GET'])
+def tweet_view_list(request, *args, **kwargs):
+     list = Tweet.objects.all()
+     serializer = TweetSerializer(list,many = True)
+     return Response(serializer.data)
+
+@api_view(['GET'])
+def tweet_detail_view(request,tweet_id, *args, **kwargs):
+    object = Tweet.objects.filter(id = tweet_id)
+    if not object.exists():
+        return Response({}, status = 404)
+    
+    serializer = TweetSerializer(object.first())
+    return Response(serializer.data, status=200)
+
+
+
+
+
+
+
+def tweet_create_view_pure_django(request, *args, **kwargs):
     form = TweetForm(request.POST or None)
     next_url = request.POST.get("next") or None
     print(next_url)
@@ -39,7 +69,7 @@ def tweet_create_view(request, *args, **kwargs):
 
 
 
-def tweet_view_list(request, *args, **kwargs):
+def tweet_view_list_pure_django(request, *args, **kwargs):
     list = Tweet.objects.all()
     t_list = [x.serialize() for x in list]
     data =  {
@@ -48,7 +78,7 @@ def tweet_view_list(request, *args, **kwargs):
     return JsonResponse(data)
 
 
-def tweet_detail_view(request, tweet_id, *args, **kwargs):
+def tweet_detail_view_pure_django(request, tweet_id, *args, **kwargs):
     """
     REST API VIEW
     Comsume by JS or Swift/Java/iOS/Android
