@@ -63,11 +63,15 @@
                 myForm.reset()
             } 
             else if (axemple_ajax.status === 400) {
-                const errorJson = axemple_ajax.response
+
                 console.log(errorJson)
             }
             else if (axemple_ajax.status === 500) {
                 alert("There is error in server. Please try again later")
+            }  else if (axemple_ajax.status === 401) {
+
+                alert("You must login to write tweet!!!")
+                window.location.href = '/login'
             }
         }
 

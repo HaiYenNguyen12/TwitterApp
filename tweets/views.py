@@ -5,6 +5,7 @@ from .forms import TweetForm
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.conf import settings
 
+
 ALLOW_HOST = settings.ALLOWED_HOSTS
 
 

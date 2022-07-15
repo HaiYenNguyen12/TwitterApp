@@ -1,9 +1,12 @@
 from dataclasses import field
+import imp
 from django import forms
 
 from .models import Tweet
 
-MAX_LENGTH  = 100
+from django.conf import settings
+
+MAX_LENGTH  = settings.MAX_LENGTH
 
 class TweetForm(forms.ModelForm):
     class Meta:
