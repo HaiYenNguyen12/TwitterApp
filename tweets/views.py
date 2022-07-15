@@ -25,8 +25,14 @@ def tweet_create_view(request, *args, **kwargs):
         if request.headers.get('x-requested-with') == 'XMLHttpRequest':
             return JsonResponse(obj.serialize(),status=201)
         if next_url != None and url_has_allowed_host_and_scheme(next_url,ALLOW_HOST):
+            print("OK")
             return redirect(next_url)
         form = TweetForm()
+    
+    if form.errors:
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            return JsonResponse(form.errors, status = 400)
+
     return render(request, "components/form.html", context={"form": form})
 
 

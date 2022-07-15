@@ -11,7 +11,7 @@
 <div class = 'col-md-4 mx-auto col-10'>
     <form class = 'form' method='POST' action='/create' id = "form_create"> {% csrf_token %}
         <input type='hidden' value='/' name = 'next'/>
-        <textarea class="form-control" name="content" id="tweet_content" rows="3" placeholder="Write your tweet here ..."></textarea>
+        <textarea required = 'required' class="form-control" name="content" id="tweet_content" rows="3" placeholder="Write your tweet here ..."></textarea>
         <button name="" id="" class="btn btn-primary" type="submit">Save</button>
     </form>
 </div>
@@ -25,6 +25,12 @@
 
 <script>
     const tweetContainer = document.getElementById("hehe")
+
+    function TweetElement(item){
+        var element = "<div class='mb-4 item col-12 col-md-10 mx-auto border rounder py-3' id= 'id-tweet"+ item.id + "'><p>" 
+            + item.content +"</p>"+"<div class='btn-group'>" + LikeButton(item) + "</div></div>"
+        return element
+    }
 
     function handleSubmitForm(event){
         event.preventDefault() //Prevent Auto Follow and try to do - by- hand
@@ -45,12 +51,28 @@
         axemple_ajax.setRequestHeader("X-Requested-With","XMLHttpRequest")
 
         axemple_ajax.onload = function() {
-            if (axemple_ajax.status === 201){
+            
+            
+             if (axemple_ajax.status === 201){
+            
                 const newTweetJson = axemple_ajax.response
-                const newTestItem =  tweetElement(newTweetJson)
+                const newTestItem =  TweetElement(newTweetJson)
                 const orginalHtml = tweetContainer.innerHTML
-                
+                tweetContainer.innerHTML = newTestItem + orginalHtml
+
+                myForm.reset()
+            } 
+            else if (axemple_ajax.status === 400) {
+                const errorJson = axemple_ajax.response
+                console.log(errorJson)
             }
+            else if (axemple_ajax.status === 500) {
+                alert("There is error in server. Please try again later")
+            }
+        }
+
+        axemple_ajax.onerror = function(){
+            alert("Tweet is too long... Please try again later")
         }
         axemple_ajax.send(formData) 
     }
@@ -99,11 +121,7 @@
 
 
 
-    function TweetElement(item){
-        var element = "<div class='mb-4 item col-12 col-md-10 mx-auto border rounder py-3' id= 'id-tweet"+ item.id + "'><p>" 
-            + item.content +"</p>"+"<div class='btn-group'>" + LikeButton(item) + "</div></div>"
-        return element
-    }
+
 
 
 </script>
