@@ -73,6 +73,11 @@
                 alert("You must login to write tweet!!!")
                 window.location.href = '/login'
             }
+            else if (axemple_ajax.status === 403) {
+
+                alert("You must login to write tweet!!!")
+                window.location.href = '/login'
+            }
         }
 
         axemple_ajax.onerror = function(){

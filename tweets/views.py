@@ -2,7 +2,8 @@ from django.http import JsonResponse,HttpResponseRedirect
 from django.shortcuts import render,redirect
 from .models import Tweet
 from .forms import TweetForm
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from .serializers import TweetSerializer
 from django.utils.http import url_has_allowed_host_and_scheme
@@ -18,8 +19,9 @@ def home_view (request, *args, **kwargs):
 
 
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def tweet_create_view(request, *args, **kwargs):
-    serializer = TweetSerializer(request.POST)
+    serializer = TweetSerializer(data=request.POST)
     if serializer.is_valid(raise_exception=True):
         serializer.save(user = request.user)
         return Response(serializer.data, status = 201)
@@ -39,6 +41,20 @@ def tweet_detail_view(request,tweet_id, *args, **kwargs):
     
     serializer = TweetSerializer(object.first())
     return Response(serializer.data, status=200)
+
+
+@api_view(['GET','DELETE'])
+@permission_classes([IsAuthenticated])
+def tweet_delete_view(request,tweet_id, *args, **kwargs):
+    object = Tweet.objects.filter(id = tweet_id)
+    if not object.exists():
+        return Response({"message":"The tweet does not exist!!"}, status = 404)
+    object = object.filter(user = request.user)
+    if not object.exists():
+        return Response({"message":"The tweet can not delete!!"}, status = 404)
+    object = object.first()
+    object.delete()
+    return Response({"message":"The tweet is deleted sucessfully !!"}, status=200)
 
 
 
