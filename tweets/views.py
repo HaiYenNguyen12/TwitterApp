@@ -5,7 +5,7 @@ from .forms import TweetForm
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from .serializers import TweetSerializer
+from .serializers import TweetSerializer, TweetActionSerializer
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.conf import settings
 
@@ -56,6 +56,36 @@ def tweet_delete_view(request,tweet_id, *args, **kwargs):
     object.delete()
     return Response({"message":"The tweet is deleted sucessfully !!"}, status=200)
 
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def tweet_action_view(request, *args, **kwargs):
+    '''
+    Action like, unlike, retweet ...
+    '''
+
+    serializer = TweetActionSerializer(data = request.POST)
+    if serializer.is_valid(raise_exception=True):
+        data = serializer.validated_data
+        tweet_id = data.get("id")
+        action = data.get("action")
+
+
+
+        object = Tweet.objects.filter(id = tweet_id)
+        if not object.exists():
+            return Response({"message":"The tweet does not exist!!"}, status = 404)
+        object = object.first()
+
+        if action == "like":
+            object.like.remove(request.user)
+        elif action == "unlike":
+            object.like.add(request.user)
+        elif action == "retweet":
+            pass
+        
+        
+        return Response({"message":"Action is successful !!"}, status=200)
 
 
 

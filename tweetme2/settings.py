@@ -32,6 +32,7 @@ ALLOWED_HOSTS = ['127.0.0.1','milocute.com']
 LOGIN_URL = '/login'
 
 MAX_LENGTH  = 100
+TWEET_ACTION_OPTIONS  = ['like','unlike','retweet']
 # Application definition
 
 INSTALLED_APPS = [
