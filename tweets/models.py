@@ -11,14 +11,14 @@ User = settings.AUTH_USER_MODEL
 class LikeTweet (models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
     tweet = models.ForeignKey("Tweet",on_delete=models.CASCADE)
-    timestamp = models.DateTimeField(auto_created=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
 
 class Tweet(models.Model):
     content = models.TextField(null=True,blank=True)
     image = models.FileField(upload_to='images/', blank=True, null=True)
     like = models.ManyToManyField(User,related_name="tweet_user", through=LikeTweet, blank=True)
     user = models.ForeignKey(User,on_delete=models.CASCADE)
-    timestamp = models.DateTimeField(auto_created=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
    
     def __str__(self):
         return self.content

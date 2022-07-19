@@ -63,8 +63,9 @@ def tweet_action_view(request, *args, **kwargs):
     '''
     Action like, unlike, retweet ...
     '''
+    print(request.POST, request.data)
 
-    serializer = TweetActionSerializer(data = request.POST)
+    serializer = TweetActionSerializer(data = request.data)
     if serializer.is_valid(raise_exception=True):
         data = serializer.validated_data
         tweet_id = data.get("id")
@@ -78,9 +79,9 @@ def tweet_action_view(request, *args, **kwargs):
         object = object.first()
 
         if action == "like":
-            object.like.remove(request.user)
-        elif action == "unlike":
             object.like.add(request.user)
+        elif action == "unlike":
+            object.like.remove(request.user)
         elif action == "retweet":
             pass
         
