@@ -45,7 +45,7 @@
 
     function TweetElement(item){
         var element = "<div class='mb-4 item col-12 col-md-10 mx-auto border rounder py-3' id= 'id-tweet"+ item.id + "'><p>" 
-            + item.content +"</p>"+"<div class='btn-group'>" + LikeButton(item) + "</div></div>"
+            + item.content +"</p>"+"<div class='btn-group'>" + LikeButton(item) + UnLikeButton(item) +RetweetButton(item)+"</div></div>"
         return element
     }
 
@@ -136,13 +136,13 @@
 
 
     
-    function HandleDidLike(id, currentLike) {
-      console.log("hhe",id, currentLike)
+    function HandleActionBtn(id, currentLike, action) {
+      console.log("hhe",id, currentLike,action)
       const url ="/api/tweets/action/"
       const method = "POST"
       const  data = JSON.stringify({
         id: id,
-        action: "like"
+        action: action
       })
       const xhr = new XMLHttpRequest()
       const csrftoken = getCookie('csrftoken');
@@ -153,6 +153,7 @@
       xhr.setRequestHeader("X-CSRFToken",csrftoken)
       xhr.onload = function() {
         console.log(xhr.status, xhr.response)
+        loadingTweet(tweetContainer)
       }
       xhr.send(data)
       return
@@ -161,7 +162,17 @@
 
     function LikeButton(item){
         console.log(item.like)
-        return "<button class = 'btn btn-primary btn-sm' onclick=HandleDidLike("+item.id+","+item.like+")>"+ item.like +" Like</button>";
+        return "<button class = 'btn btn-primary btn-sm' onclick=HandleActionBtn("+item.id+","+item.like+",'like')>"+ item.like +" Likes</button>";
+    } 
+
+    function UnLikeButton(item){
+
+        return "<button class = 'btn btn-outline-primary btn-sm' onclick=HandleActionBtn("+item.id+","+item.like+",'unlike')>"+ "Unlike</button>";
+    } 
+
+    function RetweetButton(item){
+      
+        return "<button class = 'btn btn-outline-success btn-sm' onclick=HandleActionBtn("+item.id+","+item.like+",'retweet')>Retweet</button>";
     } 
 
    

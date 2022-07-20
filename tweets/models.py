@@ -1,5 +1,4 @@
 import random
-from turtle import mode
 from django.db import models
 from django.conf import settings
 
@@ -14,6 +13,7 @@ class LikeTweet (models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
 
 class Tweet(models.Model):
+    parent = models.ForeignKey("self", null= True, on_delete= models.SET_NULL)
     content = models.TextField(null=True,blank=True)
     image = models.FileField(upload_to='images/', blank=True, null=True)
     like = models.ManyToManyField(User,related_name="tweet_user", through=LikeTweet, blank=True)
@@ -24,11 +24,14 @@ class Tweet(models.Model):
         return self.content
     class Meta:
         ordering = ['-id']
-
+    @property
+    def is_retweet(self):
+        return self.parent != None
 
     def serialize(self):
+        '''Feel free to delete'''
         return {
             "id" : self.id,
             "content" : self.content,
-            "likes" : random.randint(1,120)
+            "like" : random.randint(1,120)
         }
