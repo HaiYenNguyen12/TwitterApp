@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-3697jd%wwtx#)*)litzboy6ot9&zb+-(8s_!znhqm%+3$9rq9r
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1','milocute.com']
+ALLOWED_HOSTS = ['127.0.0.1','milocute.com','localhost']
 
 
 LOGIN_URL = '/login'
@@ -44,11 +44,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'tweets',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -135,7 +137,9 @@ if DEBUG:
     DEFAULT_RENDERER_CLASSES += ['rest_framework.renderers.BrowsableAPIRenderer']
 
 
+CORS_ORIGIN_ALLOW_ALL = True
 
+CORS_URLS_REGEX = r"^/api/.*$"
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.SessionAuthentication',
