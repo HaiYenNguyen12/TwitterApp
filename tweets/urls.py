@@ -1,6 +1,8 @@
 
 from django.contrib import admin
 from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
 from .views import (home_view, tweet_detail_view, tweet_view_list,
 tweet_create_view, tweet_delete_view,tweet_action_view)
 urlpatterns = [
@@ -12,4 +14,8 @@ urlpatterns = [
     path('<int:tweet_id>/delete/',tweet_delete_view),
     
 ]
+
+
+if settings.DEBUG:
+    urlpatterns +=static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
