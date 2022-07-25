@@ -14,7 +14,7 @@ function getCookie(name) {
   return cookieValue;
 }
 
-function lookup(method, endpoint, callback, data) {
+export function backendLookup(method, endpoint, callback, data) {
   let jsonData;
   if (data) {
     jsonData = JSON.stringify(data)
@@ -29,19 +29,14 @@ function lookup(method, endpoint, callback, data) {
   const csrftoken = getCookie('csrftoken');
   axemple_ajax.open(method,url)
   axemple_ajax.setRequestHeader("Content-Type","application/json")
-  axemple_ajax.setRequestHeader("HTTP_X_REQUESTED_WITH","XMLHttpRequest")
-  axemple_ajax.setRequestHeader("X-Requested-With","XMLHttpRequest")
-  axemple_ajax.setRequestHeader("X-CSRFToken",csrftoken)
+  if (csrftoken){
+    // xhr.setRequestHeader("HTTP_X_REQUESTED_WITH", "XMLHttpRequest")
+    axemple_ajax.setRequestHeader("X-Requested-With", "XMLHttpRequest")
+    axemple_ajax.setRequestHeader("X-CSRFToken", csrftoken)
+  }
+
   axemple_ajax.onload = function() {
         callback(axemple_ajax.response, axemple_ajax.status)
       }
   axemple_ajax.send(jsonData)
 }
-export function createTweet(newTweet,callback){
-  lookup('POST', '/tweets/create/', callback, {content: newTweet})
-  
-  }
-export function loadingTweet(callback){
-  lookup('GET', '/tweets', callback)
-  
-  }

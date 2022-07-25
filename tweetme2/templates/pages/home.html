@@ -9,7 +9,7 @@
 
 <div class = 'row mb-3'>
 <div class = 'col-md-4 mx-auto col-10'>
-    <form class = 'form' method='POST' action='/create' id = "form_create"> {% csrf_token %}
+    <form class = 'form' method='POST' action='/create/' id = "form_create"> {% csrf_token %}
         <input type='hidden' value='/' name = 'next'/>
         <textarea required = 'required' class="form-control" name="content" id="tweet_content" rows="3" placeholder="Write your tweet here ..."></textarea>
         <button name="" id="" class="btn btn-primary" type="submit">Save</button>
