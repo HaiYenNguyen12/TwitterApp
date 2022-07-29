@@ -17,7 +17,7 @@ class TweetActionSerializer ( serializers.Serializer):
     action  = serializers.CharField()
     content = serializers.CharField(allow_blank = True, required =  False)
 
-    def validation_action (self, value):
+    def validate_action (self, value):
         value = value.lower().strip()
         if not value in TWEET_ACTION_OPTIONS:
             return serializers.ValidationError("This is not a valid action!")
@@ -44,6 +44,7 @@ class TweetCreateSerializer(serializers.ModelSerializer):
 class TweetSerializer(serializers.ModelSerializer):
     like = serializers.SerializerMethodField(read_only=True)
     parent = TweetCreateSerializer(read_only = True)
+    
     class Meta:
 
         model = Tweet

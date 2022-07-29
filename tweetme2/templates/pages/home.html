@@ -18,9 +18,8 @@
 </div>
 {% comment %} <div class="row" id="hihi">
 </div> {% endcomment %}
-
-<div class="row" id="hihi">
-</div>
+<div class="row" id="hihi"></div>
+<div class="row" id="hehe"></div>
 
 
 
@@ -120,7 +119,8 @@
         axemple_ajax.responseType = responseType
         axemple_ajax.open(method,url)
         axemple_ajax.onload = function() {
-            var last_string  = "";
+            
+            var last_string  = ""
             const t_list = axemple_ajax.response;
             var i;
             for (i = 0 ; i < t_list.length;i++){
@@ -139,7 +139,6 @@
 
     
     function HandleActionBtn(id, currentLike, action) {
-      console.log("hhe",id, currentLike,action)
       const url ="/api/tweets/action/"
       const method = "POST"
       const  data = JSON.stringify({
@@ -173,14 +172,8 @@
     } 
 
     function RetweetButton(item){
-      
         return "<button class = 'btn btn-outline-success btn-sm' onclick=HandleActionBtn("+item.id+","+item.like+",'retweet')>Retweet</button>";
     } 
-
-   
-
-
-
 
 
 
