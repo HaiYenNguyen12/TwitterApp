@@ -1,17 +1,24 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
+import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import { TweetComponents } from './tweets';
 import reportWebVitals from './reportWebVitals';
+// const e = React.createElement()
+// const root = document.getElementById('hihi');
+// if (root){
+//   ReactDOM.render(
+//     e(TweetComponents, root.dataset),root
+//     // <TweetComponents/>
+// );
+// }
 
-const root = ReactDOM.createRoot(document.getElementById('hihi'));
-if (root){
-  root.render(
-
-    <TweetComponents/>
-
-);
+const e = React.createElement
+const root = document.getElementById("hihi");
+if (root) {
+    // ReactDOM.render(<TweetsComponent />, tweetsEl);
+    ReactDOM.render(
+        e(TweetComponents, root.dataset),root);
 }
 
 const rootme = ReactDOM.createRoot(document.getElementById('rootme'));

@@ -3,6 +3,7 @@ import { apiTweetCreate, apiTweetList, apiTweetAction } from './lookup'
 
 
 export function TweetComponents (props) {
+    console.log(props)
     const textAreaRef = React.createRef()
     const [newTweets, setNewTweets] = useState([])
     const handleBackendUpdate = (response, status) =>{
@@ -69,7 +70,7 @@ export function TweetParent (props) {
     return tweet.parent ? <div className='row'>
     <div className='col-11 mx-auto p-3 border rounded'>
     <p className='mb-0 text-muted small'>Retweet</p>
-    <Tweet hideActions clasName={' '} tweet={tweet.parent}/></div>
+    <Tweet hideActions   clasName={' '} tweet={tweet.parent}/></div>
     </div> : null
 }
   
