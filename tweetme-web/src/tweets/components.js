@@ -3,9 +3,12 @@ import { apiTweetCreate, apiTweetList, apiTweetAction } from './lookup'
 
 
 export function TweetComponents (props) {
-    console.log(props)
+   
     const textAreaRef = React.createRef()
     const [newTweets, setNewTweets] = useState([])
+
+    const canTweet = props.canTweet === "true" ? true : false
+
     const handleBackendUpdate = (response, status) =>{
         const newTweetList  = [...newTweets]
         if (status === 201) {
@@ -29,7 +32,7 @@ export function TweetComponents (props) {
 
     }
     return <div className= {props.clasName}>
-    <div className='col-12 mb-13'>
+    { canTweet === true &&< div className='col-12 mb-13'>
     <form onSubmit={handleSubmit}>
     <textarea ref = {textAreaRef} required={true} className='form-control' name='tweet'>
 
@@ -37,7 +40,8 @@ export function TweetComponents (props) {
     <button type='submit' className='btn btn-primary py-2'>Tweet</button>
     </form>
     </div>
-    <TweetList newTweets = {newTweets}/>
+    }
+    <TweetList newTweets = {newTweets}   {...props}/>
     </div>
 }
 
@@ -105,6 +109,7 @@ export  function Tweet (props) {
    }
 
 export function TweetList (props) {
+    console.log(props)
     const [tweetsInit, setTweetsInit] = useState([])
     const [tweets, setTweets] = useState([])
     const [tweetDid, setTweetDid] = useState(false)
@@ -122,16 +127,15 @@ export function TweetList (props) {
                     if (status === 200){
                         setTweetsInit (response)
                         setTweetDid(true)
-                        console.log(response)
                     }
                     else {
                         alert("There was an error")
                     }
                 }
-                apiTweetList(myCallback)
+                apiTweetList(props.username, myCallback)
         }
 
-      },[tweetsInit,setTweetDid,tweetDid])
+      },[tweetsInit,setTweetDid,tweetDid, props.username])
 
       const handleDidReTweet = (newTweet) => {
         console.log("new")
