@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import { TweetComponents } from './tweets';
+import { TweetComponents, TweetDetailComponent } from './tweets';
 import reportWebVitals from './reportWebVitals';
 // const e = React.createElement()
 // const root = document.getElementById('hihi');
@@ -14,6 +14,16 @@ import reportWebVitals from './reportWebVitals';
 // }
 
 const e = React.createElement
+
+
+
+const detailEl = document.querySelectorAll(".tweetme-2-detail")
+
+detailEl.forEach(container=>{
+  ReactDOM.render(
+    e(TweetDetailComponent, container.dataset), container);
+});
+
 const root = document.getElementById("hihi");
 if (root) {
     // ReactDOM.render(<TweetsComponent />, tweetsEl);
@@ -31,7 +41,6 @@ if (rootme) {
 }
 
 
-
 // const tweets = ReactDOM.createRoot(document.getElementById('root');
 // tweets.render(
 
@@ -44,12 +53,12 @@ if (rootme) {
 //   ReactDOM.render(<App />, appEl);
 // }
 
-const tweetsEl = document.getElementById("hehe")
-if (tweetsEl){
-  console.log("hihi")
-  ReactDOM.render(<TweetComponents />, tweetsEl);
-  console.log("bye")
-}
+// const tweetsEl = document.getElementById("hehe")
+// if (tweetsEl){
+//   console.log("hihi")
+//   ReactDOM.render(<TweetComponents />, tweetsEl);
+//   console.log("bye")
+// }
 
 
 // If you want to start measuring performance in your app, pass a function

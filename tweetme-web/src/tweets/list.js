@@ -5,7 +5,7 @@ import {apiTweetList} from './lookup'
 
 
 export function TweetList (props) {
-    console.log(props)
+
     const [tweetsInit, setTweetsInit] = useState([])
     const [tweets, setTweets] = useState([])
     const [tweetDid, setTweetDid] = useState(false)

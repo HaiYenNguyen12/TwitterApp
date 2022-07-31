@@ -20,7 +20,6 @@ export function apiTweetDetail(id, callback){
     let endpoint = `/tweets`
     if (username){
       endpoint = `/tweets/?username=${username}`
-      console.log(endpoint)
     }
     backendLookup('GET', endpoint, callback)
     
