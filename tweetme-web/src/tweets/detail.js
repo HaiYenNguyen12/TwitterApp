@@ -18,6 +18,7 @@ export  function Tweet (props) {
     const className = props.className ? props.className : 'col-10 mx-auto col-md-6'
 
     const path = window.location.pathname
+   
     const math = path.match(/(?<tweetid>\d+)/)
     const urlId = math ? math.groups.tweetid : -1
     const isDetail = `${tweet.id}` === `${urlId}`
@@ -25,7 +26,7 @@ export  function Tweet (props) {
 
     const handleClick = (event) =>{
       event.preventDefault()
-      window.location.href = `/${urlId}`
+      window.location.href = `/${tweet.id}`
     }
     
     const handlePerformAction = (newActionTweet, status) => {
@@ -38,12 +39,12 @@ export  function Tweet (props) {
         }
     }
 
-    return <div className= {className}>
+    return <div className= {className} onClick={handleClick}>
             <div>
             <p>  {tweet.id} - {tweet.content}</p>
             <TweetParent tweet = {tweet} />
             </div>
-              <div className='btn btn-group'>
+              <div className='btn btn-group' >
               {(actionTweet && hideActions !== true) && <React.Fragment>
               <ActionButton tweet = {actionTweet} didPerformAction={handlePerformAction} action = {{type: "like",display : "Likes"}} />
               <ActionButton tweet = {actionTweet} didPerformAction={handlePerformAction} action = {{type: "unlike",display : "Unlike"}} />
