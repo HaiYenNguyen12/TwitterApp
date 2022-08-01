@@ -16,6 +16,17 @@ export  function Tweet (props) {
     const {tweet,  didRetweet, hideActions} = props
     const [actionTweet, setActionTweet] = useState(props.tweet ? props.tweet : null)
     const className = props.className ? props.className : 'col-10 mx-auto col-md-6'
+
+    const path = window.location.pathname
+    const math = path.match(/(?<tweetid>\d+)/)
+    const urlId = math ? math.groups.tweetid : -1
+    const isDetail = `${tweet.id}` === `${urlId}`
+
+
+    const handleClick = (event) =>{
+      event.preventDefault()
+      window.location.href = `/${urlId}`
+    }
     
     const handlePerformAction = (newActionTweet, status) => {
         if (status === 200){
@@ -32,11 +43,18 @@ export  function Tweet (props) {
             <p>  {tweet.id} - {tweet.content}</p>
             <TweetParent tweet = {tweet} />
             </div>
-              
-              {(actionTweet && hideActions !== true) && <div className='btn btn-group'>
+              <div className='btn btn-group'>
+              {(actionTweet && hideActions !== true) && <React.Fragment>
               <ActionButton tweet = {actionTweet} didPerformAction={handlePerformAction} action = {{type: "like",display : "Likes"}} />
               <ActionButton tweet = {actionTweet} didPerformAction={handlePerformAction} action = {{type: "unlike",display : "Unlike"}} />
               <ActionButton tweet = {actionTweet} didPerformAction={handlePerformAction} action = {{type: "retweet",display : "Retweet"}} />
-              </div>}
+              </React.Fragment>
+              }
+              </div>
+              {
+                isDetail === true ? null : <button className='btn btn-outline-primary btn-sm' onClick={handleClick}>View</button>
+              }
+
+              
     </div>
    }
