@@ -17,19 +17,13 @@ from django.contrib import admin
 from django.urls import path, re_path, include
 from django.views.generic import TemplateView
 
-from tweets.views import (home_view, tweet_detail_view, tweet_view_list,
-tweet_create_view, tweet_delete_view,tweet_action_view, local_detail_view,
-local_list_view,local_profile_view)
+from tweets.views import (  detail_view,
+list_view,profile_view)
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('',home_view),
-    path('react/',TemplateView.as_view(template_name='react_via_dj.html')),
-    path('tweets/',tweet_view_list),
-    path('create/',tweet_create_view),
-    path('tweets/<int:tweet_id>/',tweet_detail_view),
-    path('', local_list_view),
-    path('<int:tweet_id>/', local_detail_view),
-    path('profile/<str:username>', local_detail_view),
-    path('api/tweets/', include('tweets.urls'))
+    path('', list_view),
+    path('<int:tweet_id>/', detail_view),
+    path('profile/<str:username>', profile_view),
+    path('api/tweets/', include('tweets.api.urls'))
 ]
 
