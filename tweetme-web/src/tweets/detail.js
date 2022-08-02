@@ -39,7 +39,7 @@ export  function Tweet (props) {
         }
     }
 
-    return <div className= {className} onClick={handleClick}>
+    return <div className= {className} >
             <div>
             <p>  {tweet.id} - {tweet.content}</p>
             <TweetParent tweet = {tweet} />
