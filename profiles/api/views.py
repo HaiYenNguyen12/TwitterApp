@@ -17,6 +17,13 @@ def user_follow_view(request, username,  *args, **kwargs):
     me = request.user
     other_user_qs = User.objects.filter(username = username)
 
+    if me.username == username:
+        count = {
+            "count" : me.profile.follower.all().count()
+        }
+        return Response(count, status = 400)
+
+
     if other_user_qs.exists():
         other = other_user_qs.first()
         profile = other.profile
