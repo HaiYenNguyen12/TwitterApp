@@ -1,5 +1,4 @@
-import profile
-from re import T
+
 from django.conf import settings
 from django.db import models
 from django.db.models.signals import post_save
@@ -29,7 +28,7 @@ class Profile (models.Model):
     """
     project_obj = Profile.objects.first()
     project_obj.followers.all() -> All users following this profile
-    user.following.all() -> All users I follow
+    user.following.all() -> All user profiles I follow
     """
 
 
