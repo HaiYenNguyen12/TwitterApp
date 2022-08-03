@@ -1,5 +1,5 @@
-import re
-from django.http import JsonResponse,HttpResponseRedirect
+
+from django.http import  JsonResponse,HttpResponseRedirect
 from django.shortcuts import render,redirect
 from ..models import Tweet
 from ..forms import TweetForm
@@ -28,17 +28,11 @@ def tweet_create_view(request, *args, **kwargs):
 @permission_classes([IsAuthenticated])
 def tweet_view_feed(request, *args, **kwargs):
     user = request.user
+    qs = Tweet.objects.feed(user)
 
-    profiles = user.following.all()
-    profiles_id = []
-    if profiles.exists():
-        for i in profiles:
-            profiles_id.append(i.user.id)
-        qs = Tweet.objects.filter(user__id__in= profiles_id).order_by("-timestamp")
+    serializer = TweetSerializer(qs,many = True)
 
-        serializer = TweetSerializer(qs,many = True)
-
-        return Response(serializer.data,status=200)
+    return Response(serializer.data,status=200)
 
 
 @api_view(['GET'])
@@ -46,7 +40,7 @@ def tweet_view_list(request, *args, **kwargs):
      list = Tweet.objects.all()
      username = request.GET.get("username")
      if username != None:
-        list = list.filter(user__username__iexact=username)
+        list = list.by_username(username)
      serializer = TweetSerializer(list,many = True)
 
      return Response(serializer.data)
