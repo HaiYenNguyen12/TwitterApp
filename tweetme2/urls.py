@@ -16,7 +16,7 @@ Including another URLconf
 from distutils.log import Log
 from django.contrib import admin
 from django.urls import path, re_path, include
-from django.views.generic import TemplateView
+
 from accounts.views import ( login_view,logout_view,register_view)
 from tweets.views import (  detail_view,list_view)
 urlpatterns = [
@@ -27,6 +27,7 @@ urlpatterns = [
     path('register/', register_view),
     path('<int:tweet_id>/', detail_view),
     re_path(r'profiles?/', include('profiles.urls')),
+    re_path(r'api/profiles?/', include('profiles.api.urls')),
     path('api/tweets/', include('tweets.api.urls'))
 ]
 
