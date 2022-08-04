@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 import { ActionButton } from './buttons'
+import { UserDisplay,UserPicture} from '../profile'
 
 export function TweetParent (props) {
     const {tweet} = props
@@ -37,21 +38,17 @@ export  function Tweet (props) {
 
     return <div className= {className} >
 {isRetweet === true && <div className='mb-2'>
-          <span className='small text-muted'>Retweet via @{retweeter.username}</span>
+          <span className='small text-muted'>Retweet via <UserDisplay user={retweeter}></UserDisplay></span>
         </div>}
         <div className='d-flex'>
 
           <div className=''>
-            <span className='mx-1 px-3 py-2 rounded-circle bg-dark text-white'>
-            {tweet.user.username[0]}
-            </span>
+          <UserPicture user = {tweet.user}></UserPicture>
           </div>
           <div className='col-11'>
               <div>
                 <p>
-                  {tweet.user.first_name}{" "}
-                  {tweet.user.last_name}{" "}
-                  @{tweet.user.username}
+                <UserDisplay user={tweet.user} includeFullname></UserDisplay>
                 </p>
                 <p>{tweet.content}</p>
 
