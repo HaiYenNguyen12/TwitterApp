@@ -1,5 +1,6 @@
 from cProfile import Profile
 import imp
+from multiprocessing import context
 from django.shortcuts import render,redirect
 from django.http import Http404
 from django.urls import is_valid_path
@@ -41,9 +42,14 @@ def profile_detail_view (request,username, *args, **kwargs):
     qs = Profile.objects.filter(user__username = username)
     if qs.exists():
         profile = qs.first()
+        is_following = False
+        if request.user.is_authenicated:
+            user = request.user
+            is_following = user in profile.follower.all()
         context = {
             "username":username,
-            "profile" : profile
+            "profile" : profile,
+            "is_following" : is_following
 
         }
     else:
