@@ -8,6 +8,7 @@ export function TweetList (props) {
 
     const [tweetsInit, setTweetsInit] = useState([])
     const [tweets, setTweets] = useState([])
+    const [nextUrl, setNextUrl] = useState(null)
     const [tweetDid, setTweetDid] = useState(false)
     useEffect(()=>{
         const final = [...props.newTweets].concat(tweetsInit)
@@ -21,7 +22,8 @@ export function TweetList (props) {
             const myCallback = (response, status) => {
                 
                     if (status === 200){
-                        setTweetsInit (response)
+                        setTweetsInit (response.results)
+                        setNextUrl(response.next)
                         setTweetDid(true)
                     }
                     else {
@@ -48,12 +50,14 @@ export function TweetList (props) {
         console.log(updateFinalTweets)
         setTweets(updateFinalTweets)
       }
-    return (tweets.map((tweet, index)=>{
+    return (<React.Fragment>{tweets.map((tweet, index)=>{
         
         return <Tweet
          tweet= {tweet} 
          didRetweet={handleDidReTweet}
          key = {`${index}-{tweet.id}`} 
          className ='my-5 py-5 border bg-white text-dark'/>
-      }))
+      })}
+      {nextUrl!== null && <button className='btn btn-outline-primary'>Next</button>}
+      </React.Fragment>)
 }
