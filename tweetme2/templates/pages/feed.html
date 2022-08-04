@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% if request.user.is_authenticated %}
+    {% comment %} <h1>Nnahahof</h1> {% endcomment %}
+    <div id="feed"></div>
+{%else%}
+    <div class="row" id="hihi"></div>
+{%endif%}
+{% comment %} <div class="row" id="hehe"></div> {% endcomment %}
+
+
+
+
+
+
+{% endblock content %}

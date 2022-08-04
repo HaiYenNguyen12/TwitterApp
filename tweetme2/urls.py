@@ -18,10 +18,11 @@ from django.contrib import admin
 from django.urls import path, re_path, include
 
 from accounts.views import ( login_view,logout_view,register_view)
-from tweets.views import (  detail_view,list_view)
+from tweets.views import (  detail_view, home_view,list_view)
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', list_view),
+    path('', home_view),
+    path('global/', list_view),
     path('login/', login_view),
     path('logout/', logout_view),
     path('register/', register_view),
