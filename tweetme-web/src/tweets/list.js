@@ -35,6 +35,24 @@ export function TweetList (props) {
 
       },[tweetsInit,setTweetDid,tweetDid, props.username])
 
+      const handleNextButton = (event) =>{
+        event.preventDefault()
+        if (nextUrl!= null){
+            apiTweetList(props.username, (response,status)=>{
+                if (status === 200){
+                    const newListTweet = [...tweets].concat(response.results)
+                    setTweetsInit(newListTweet)
+                    setTweets (newListTweet)
+                    setNextUrl(response.next)
+                }
+                else {
+                    alert("There was an error")
+                }
+
+            }, nextUrl)
+        }
+      }
+
       const handleDidReTweet = (newTweet) => {
         console.log("new")
         console.log(newTweet)
@@ -58,6 +76,6 @@ export function TweetList (props) {
          key = {`${index}-{tweet.id}`} 
          className ='my-5 py-5 border bg-white text-dark'/>
       })}
-      {nextUrl!== null && <button className='btn btn-outline-primary'>Next</button>}
+      {nextUrl!== null && <button onClick={handleNextButton} className='btn btn-outline-primary'>Next</button>}
       </React.Fragment>)
 }
