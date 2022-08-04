@@ -39,7 +39,9 @@ export function backendLookup(method, endpoint, callback, data) {
         if (axemple_ajax.status === 403) {
           const detail  = axemple_ajax.response.detail
           if (detail === 'Authentication credentials were not provided.'){
-            window.location.href = "/login?showLoginRequired=true"
+            if (window.location.href.indexOf("login") === -1) {
+              window.location.href = "/login?showLoginRequired=true"
+            }
           }
         }
         callback(axemple_ajax.response, axemple_ajax.status)

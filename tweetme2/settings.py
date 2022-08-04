@@ -146,7 +146,7 @@ DEFAULT_AUTHENTICATION_CLASSES = [  'rest_framework.authentication.SessionAuthen
 
 if DEBUG:
     DEFAULT_RENDERER_CLASSES += ['rest_framework.renderers.BrowsableAPIRenderer']
-    # DEFAULT_AUTHENTICATION_CLASSES += ['tweetme2.rest_api.dev.DevAuthenication']
+    DEFAULT_AUTHENTICATION_CLASSES += ['tweetme2.rest_api.dev.DevAuthenication']
 
 CORS_ORIGIN_ALLOW_ALL = True
 
