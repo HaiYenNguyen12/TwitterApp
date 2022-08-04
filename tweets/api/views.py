@@ -6,6 +6,7 @@ from ..forms import TweetForm
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.pagination import PageNumberPagination
 from ..serializers import TweetSerializer, TweetActionSerializer,TweetCreateSerializer
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.conf import settings
@@ -24,15 +25,20 @@ def tweet_create_view(request, *args, **kwargs):
     return Response({}, status = 400)
 
 
+def get_paginated_queryset_response(qs, request):
+        paginator = PageNumberPagination()
+        paginator.page_size = 20
+        paginated_qs = paginator.paginate_queryset(qs, request)
+        serializer = TweetSerializer(paginated_qs, many=True)
+        return paginator.get_paginated_response(serializer.data) # Response( serializer.data, status=200)
+
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def tweet_view_feed(request, *args, **kwargs):
     user = request.user
     qs = Tweet.objects.feed(user)
-
-    serializer = TweetSerializer(qs,many = True)
-
-    return Response(serializer.data,status=200)
+    return get_paginated_queryset_response(qs, request)
 
 
 @api_view(['GET'])
@@ -41,9 +47,9 @@ def tweet_view_list(request, *args, **kwargs):
      username = request.GET.get("username")
      if username != None:
         list = list.by_username(username)
-     serializer = TweetSerializer(list,many = True)
+     return get_paginated_queryset_response(list, request)
 
-     return Response(serializer.data)
+
 
 @api_view(['GET'])
 def tweet_detail_view(request,tweet_id, *args, **kwargs):
